@@ -1,11 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "python scripts/vercel_build.py",
-  "functions": {
-    "app.py": {
-      "maxDuration": 300,
-      "memory": 2048,
-      "excludeFiles": "{data/raw/**,data/*_long.csv}"
-    }
-  }
+  "framework": null,
+  "buildCommand": "node scripts/write_api_config.js",
+  "outputDirectory": "static",
+  "rewrites": [
+    { "source": "/dashboards/palay", "destination": "/dashboards/palay.html" },
+    { "source": "/dashboards/corn", "destination": "/dashboards/corn.html" },
+    { "source": "/dashboards/fruits", "destination": "/dashboards/fruits.html" },
+    { "source": "/dashboards/vegetables", "destination": "/dashboards/vegetables.html" }
+  ]
 }

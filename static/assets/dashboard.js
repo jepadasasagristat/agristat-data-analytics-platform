@@ -387,7 +387,7 @@ function qs(params) {
 }
 
 async function api(path, options) {
-  const res = await fetch(path, options);
+  const res = await fetch(window.agriApiUrl(path), options);
   if (!res.ok) {
     let message = res.statusText || `Request failed (${res.status})`;
     try {

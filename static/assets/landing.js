@@ -462,7 +462,7 @@ async function loadLandingSummary() {
   renderSnapshotSkeletons();
   setRefreshBusy(true);
   try {
-    const res = await fetch("/api/landing/summary", { cache: "no-store" });
+    const res = await fetch(window.agriApiUrl("/api/landing/summary"), { cache: "no-store" });
     if (!res.ok) throw new Error(`Summary request failed (${res.status})`);
     const data = await res.json();
     renderSnapshots(data);

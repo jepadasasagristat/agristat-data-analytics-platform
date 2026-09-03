@@ -2,4 +2,10 @@ run_dashboard.bat
 **/__pycache__/**
 **/*.pyc
 **/.pytest_cache/**
-data/raw/**
+.vercel/
+data/**
+scraping/**
+app.py
+requirements.txt
+render.yaml
+scripts/vercel_build.py
