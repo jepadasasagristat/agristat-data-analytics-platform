@@ -11,5 +11,9 @@ RAW_DIR = DATA_DIR / "raw"
 
 
 def ensure_data_dirs() -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        RAW_DIR.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        # Vercel (and similar) filesystems are read-only except /tmp.
+        return

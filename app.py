@@ -68,7 +68,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-scheduler = BackgroundScheduler()
+scheduler: BackgroundScheduler | None = None
+if not IS_SERVERLESS:
+    scheduler = BackgroundScheduler()
+
+
+def _is_sqlite_file(path: Path) -> bool:
+    if not path.is_file() or path.stat().st_size < 100:
+        return False
+    try:
+        with path.open("rb") as fh:
+            return fh.read(16).startswith(b"SQLite format 3")
+    except OSError:
+        return False
 
 
 def resolve_dataset(dataset: Optional[str]) -> dict[str, Any]:
@@ -76,7 +88,8 @@ def resolve_dataset(dataset: Optional[str]) -> dict[str, Any]:
     if key not in DATASETS:
         raise HTTPException(status_code=400, detail=f"Unknown dataset: {dataset}")
     cfg = DATASETS[key]
-    if not Path(cfg["db_path"]).exists():
+    db_path = Path(cfg["db_path"])
+    if not _is_sqlite_file(db_path):
         raise HTTPException(
             status_code=503,
             detail=f"Dataset '{key}' is not ready yet.",
@@ -98,14 +111,15 @@ def db(dataset: str = "palay_corn") -> Iterator[sqlite3.Connection]:
     db_path = Path(cfg["db_path"])
     if IS_SERVERLESS:
         conn = sqlite3.connect(
-            f"file:{db_path.as_posix()}?mode=ro",
+            f"file:{db_path.as_posix()}?mode=ro&immutable=1",
             uri=True,
             check_same_thread=False,
         )
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA query_only=ON")
     else:
         conn = sqlite3.connect(db_path, check_same_thread=False)
-    conn.row_factory = sqlite3.Row
-    if not IS_SERVERLESS:
+        conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA journal_mode=WAL")
         conn.execute("PRAGMA synchronous=NORMAL")
         conn.execute("PRAGMA temp_store=MEMORY")
@@ -147,7 +161,7 @@ def _ensure_perf_tables() -> None:
 
 
 def _ensure_dataset() -> None:
-    if DB_PATH.exists():
+    if _is_sqlite_file(DB_PATH):
         pipeline._state.update(
             {
                 "status": "ok",
@@ -182,27 +196,29 @@ def _scheduled_refresh() -> None:
 
 @app.on_event("startup")
 def on_startup() -> None:
-    _ensure_dataset()
-    _ensure_perf_tables()
-    if IS_SERVERLESS:
-        return
-    # PSA crop stats update roughly quarterly; weekly refresh keeps dashboard current
-    if not scheduler.running:
-        scheduler.add_job(
-            _scheduled_refresh,
-            trigger="cron",
-            day_of_week="mon",
-            hour=2,
-            minute=0,
-            id="psa_weekly_refresh",
-            replace_existing=True,
-        )
-        scheduler.start()
+    try:
+        _ensure_dataset()
+        if not IS_SERVERLESS:
+            _ensure_perf_tables()
+            if scheduler is not None and not scheduler.running:
+                scheduler.add_job(
+                    _scheduled_refresh,
+                    trigger="cron",
+                    day_of_week="mon",
+                    hour=2,
+                    minute=0,
+                    id="psa_weekly_refresh",
+                    replace_existing=True,
+                )
+                scheduler.start()
+    except Exception:
+        # Never crash the function on boot; serve a degraded health response instead.
+        pass
 
 
 @app.on_event("shutdown")
 def on_shutdown() -> None:
-    if scheduler.running:
+    if scheduler is not None and scheduler.running:
         scheduler.shutdown(wait=False)
 
 
@@ -210,10 +226,10 @@ def on_shutdown() -> None:
 def health() -> dict[str, Any]:
     return {
         "ok": True,
-        "db_exists": PALAY_CORN_DB.exists(),
+        "db_exists": _is_sqlite_file(PALAY_CORN_DB),
         "datasets": {
             key: {
-                "ready": Path(cfg["db_path"]).exists(),
+                "ready": _is_sqlite_file(Path(cfg["db_path"])),
                 "label": cfg["label"],
             }
             for key, cfg in DATASETS.items()

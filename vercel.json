@@ -8,7 +8,7 @@
     "api/index.py": {
       "maxDuration": 300,
       "memory": 2048,
-      "excludeFiles": "data/raw/**"
+      "excludeFiles": "{data/raw/**,data/*_long.csv}"
     }
   }
 }
