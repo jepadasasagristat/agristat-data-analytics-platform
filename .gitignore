@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.env
+.pytest_cache/
+
+# Local runtime / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# SQLite sidecars and oversized local DBs (GitHub 100MB limit)
+# Rebuild on deploy via: python scripts/vercel_build.py
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/raw/
+
+# Vercel / local tooling
+.vercel/
+run_dashboard.bat

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Fruit Crops Production Dashboard</title>
+  <link rel="icon" type="image/png" href="/assets/images/dap-logo.png" />
+  <link rel="apple-touch-icon" href="/assets/images/dap-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/assets/styles.css?v=92" />
+</head>
+<body>
+  <div class="app-layout" id="appLayout">
+    <header class="app-header">
+      <div class="header-start">
+        <a class="header-home-link" href="/" title="Back to Data Analytics Platform" aria-label="Back to Data Analytics Platform" id="homeLink">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+          </svg>
+        </a>
+        <button
+          type="button"
+          class="header-icon-btn menu-toggle"
+          id="menuToggle"
+          aria-expanded="false"
+          aria-controls="app-sidebar"
+          aria-label="Open filters"
+        >
+          <span class="menu-toggle-icon" aria-hidden="true"></span>
+        </button>
+        <div class="header-brand">
+          <a
+            class="brand-mark"
+            href="/"
+            id="brandHomeLink"
+            title="Back to Data Analytics Platform"
+            aria-label="Back to Data Analytics Platform"
+          >
+            <img src="/assets/images/dap-logo.png" alt="DAP" class="brand-logo" />
+          </a>
+          <div class="brand-text">
+            <strong id="dashboardTitle">Fruit Crops Production Dashboard</strong>
+            <span>Department of Agriculture · Agricultural Statistics NCMO</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button
+          type="button"
+          class="header-analysis-btn"
+          id="smartAnalysisBtn"
+          title="Open smart analysis for the current filters"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              fill="currentColor"
+              d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 1 1 9.5 3m0 2C7.01 5 5 7.01 5 9.5S7.01 14 9.5 14 14 11.99 14 9.5 11.99 5 9.5 5z"
+            />
+          </svg>
+          <span>Smart Analysis</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside class="app-sidebar" id="app-sidebar" aria-label="Filters" aria-expanded="true">
+        <div class="sidebar-nav">
+          <div class="nav-section">
+            <span class="nav-section-title">Filters</span>
+            <form class="filter-form" id="filterForm" onsubmit="return false;">
+              <div class="filter-field filter-field-year" data-filter="year" title="Year range">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zM7 12h5v5H7z"/></svg>
+                </span>
+                <div class="filter-label-row">
+                  <span class="filter-label-text">Year range</span>
+                  <span class="year-range-count" id="yearRangeCount">All years</span>
+                </div>
+                <div class="year-range" id="yearRange">
+                  <div class="year-range-slider" aria-label="Select start and end year">
+                    <div class="year-tooltip" id="yearTooltip" aria-hidden="true">1990 – 2025</div>
+                    <div class="year-range-rail">
+                      <div class="year-range-track" id="yearRangeTrack"></div>
+                    </div>
+                    <input type="range" id="yearFrom" min="1990" max="2026" value="1990" step="1" aria-label="Start year" />
+                    <input type="range" id="yearTo" min="1990" max="2026" value="2025" step="1" aria-label="End year" />
+                  </div>
+                  <div class="year-range-scale" id="yearRangeScale" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="filter-field" data-filter="quarter" title="Quarter">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 2.07c3.61.45 6.48 3.32 6.93 6.93H13V4.07zM4 12c0-4.08 3.05-7.44 7-7.93v15.86C7.05 19.44 4 16.08 4 12zm9 7.93V13h6.93A8.002 8.002 0 0 1 13 19.93z"/></svg>
+                </span>
+                <span class="filter-label-text">Quarter</span>
+                <div class="multi-select" id="quarter" data-all-label="All quarters">
+                  <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="multi-select-summary">All quarters</span>
+                  </button>
+                  <div class="multi-select-panel" hidden role="listbox" aria-multiselectable="true" aria-label="Quarter">
+                    <div class="multi-select-actions">
+                      <button type="button" class="multi-select-action" data-multi-action="select-all">Select all</button>
+                      <span class="multi-select-actions-sep" aria-hidden="true">·</span>
+                      <button type="button" class="multi-select-action" data-multi-action="clear">Deselect all</button>
+                    </div>
+                    <label class="multi-select-option"><input type="checkbox" value="1" checked /><span>Quarter 1</span></label>
+                    <label class="multi-select-option"><input type="checkbox" value="2" checked /><span>Quarter 2</span></label>
+                    <label class="multi-select-option"><input type="checkbox" value="3" checked /><span>Quarter 3</span></label>
+                    <label class="multi-select-option"><input type="checkbox" value="4" checked /><span>Quarter 4</span></label>
+                  </div>
+                </div>
+              </div>
+              <div class="filter-field" data-filter="semester" title="Semester">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8h8V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z"/></svg>
+                </span>
+                <span class="filter-label-text">Semester</span>
+                <div class="multi-select" id="semester" data-all-label="All semesters">
+                  <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="multi-select-summary">All semesters</span>
+                  </button>
+                  <div class="multi-select-panel" hidden role="listbox" aria-multiselectable="true" aria-label="Semester">
+                    <div class="multi-select-actions">
+                      <button type="button" class="multi-select-action" data-multi-action="select-all">Select all</button>
+                      <span class="multi-select-actions-sep" aria-hidden="true">·</span>
+                      <button type="button" class="multi-select-action" data-multi-action="clear">Deselect all</button>
+                    </div>
+                    <label class="multi-select-option"><input type="checkbox" value="1" checked /><span>Semester 1</span></label>
+                    <label class="multi-select-option"><input type="checkbox" value="2" checked /><span>Semester 2</span></label>
+                  </div>
+                </div>
+              </div>
+              <div class="filter-field" data-filter="crop" title="Fruit" id="subtypeFilterField">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.6 10.25c0 2.07 1.68 3.75 3.75 3.75.48 0 .94-.09 1.36-.26-1.35-1.27-2.19-3.07-2.19-5.07 0-.34.03-.67.08-.99-1.74.57-3 2.2-3 4.07zM12.5 2C9.85 2 7.45 3.13 5.8 4.97c.64-.1 1.3-.17 1.98-.17 3.54 0 6.65 1.77 8.5 4.47.4-.16.84-.25 1.3-.25 1.84 0 3.42 1.25 3.88 2.97C22.38 8.1 17.79 2 12.5 2z"/></svg>
+                </span>
+                <span class="filter-label-text" id="subtypeFilterLabel">Fruit</span>
+                <div class="multi-select multi-select-drop-up" id="crop" data-all-label="All fruits" data-searchable="true" data-search-placeholder="Search fruits…">
+                  <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="multi-select-summary">All fruits</span>
+                  </button>
+                  <div class="multi-select-panel multi-select-panel-tall" hidden role="listbox" aria-multiselectable="true" aria-label="Fruit" id="subtypeFilterPanel">
+                    <div class="multi-select-actions">
+                      <button type="button" class="multi-select-action" data-multi-action="select-all">Select all</button>
+                      <span class="multi-select-actions-sep" aria-hidden="true">·</span>
+                      <button type="button" class="multi-select-action" data-multi-action="clear">Deselect all</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="filter-field" data-filter="region" title="Region">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+                </span>
+                <span class="filter-label-text">Region</span>
+                <div class="multi-select multi-select-drop-up" id="region" data-all-label="All regions" data-optional="true" data-searchable="true" data-search-placeholder="Search regions…">
+                  <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="multi-select-summary">All regions</span>
+                  </button>
+                  <div class="multi-select-panel multi-select-panel-tall" hidden role="listbox" aria-multiselectable="true" aria-label="Region"></div>
+                </div>
+              </div>
+              <div class="filter-field" data-filter="province" title="Province">
+                <span class="filter-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zM7 19H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+                </span>
+                <span class="filter-label-text">Province</span>
+                <div class="multi-select multi-select-drop-up" id="province" data-all-label="All provinces" data-optional="true" data-searchable="true" data-search-placeholder="Search provinces…">
+                  <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+                    <span class="multi-select-summary">All provinces</span>
+                  </button>
+                  <div class="multi-select-panel multi-select-panel-tall" hidden role="listbox" aria-multiselectable="true" aria-label="Province"></div>
+                </div>
+              </div>
+            </form>
+            <button
+              type="button"
+              class="filter-reset-btn"
+              id="resetFiltersBtn"
+              title="Reset filters"
+              aria-label="Reset filters"
+            >
+              <span class="filter-icon filter-reset-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+              </span>
+              <span class="filter-reset-label">Reset filters</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-footer">
+          <button
+            type="button"
+            class="sidebar-collapse-btn"
+            id="sidebarCollapseBtn"
+            aria-label="Hide Filter"
+            title="Hide Filter"
+          >
+            <svg class="icon-chevron icon-chevron-left" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+            <svg class="icon-chevron icon-chevron-right" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+            </svg>
+            <span class="sidebar-collapse-label">Hide Filter</span>
+          </button>
+        </div>
+      </aside>
+
+      <button type="button" class="sidebar-backdrop" id="sidebarBackdrop" hidden aria-label="Close filters"></button>
+
+      <main class="app-main">
+        <section class="score-strip" id="kpis" aria-label="Key metrics">
+          <div class="score-group score-group-averages score-group-compact">
+            <p class="score-group-label">Averages</p>
+            <div class="score-track">
+              <article class="score-card">
+                <span class="score-label">Production Vol.</span>
+                <div class="score-body">
+                  <div class="score-metric">
+                    <strong class="score-value" id="kpiVolume">—</strong>
+                    <span class="score-unit">MT</span>
+                  </div>
+                  <span class="score-meta" id="kpiVolumeHint">Average per year</span>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="score-group score-group-compare" id="productionComparison">
+            <p class="score-group-label" id="productionComparisonLabel">Production · Year-over-year</p>
+            <div class="score-track">
+              <article class="score-card">
+                <span class="score-label" data-cmp-year="to">—</span>
+                <div class="score-body">
+                  <div class="score-metric">
+                    <strong class="score-value" id="cmpVolume2025">—</strong>
+                    <span class="score-unit">MT</span>
+                  </div>
+                  <span class="score-meta">Total Production Volume</span>
+                </div>
+              </article>
+              <article class="score-card">
+                <span class="score-label" data-cmp-year="from">—</span>
+                <div class="score-body">
+                  <div class="score-metric">
+                    <strong class="score-value" id="cmpVolume2024">—</strong>
+                    <span class="score-unit">MT</span>
+                  </div>
+                  <span class="score-meta">Total Production Volume</span>
+                </div>
+              </article>
+              <article class="score-card" id="cmpVarianceCard">
+                <span class="score-label">Variance</span>
+                <div class="score-body">
+                  <div class="score-metric">
+                    <strong class="score-value" id="cmpVariance">—</strong>
+                    <span class="score-unit">MT</span>
+                  </div>
+                  <span class="score-meta" data-cmp-variance-meta>Year-over-year</span>
+                </div>
+              </article>
+              <article class="score-card" id="cmpGrowthCard">
+                <span class="score-label">Growth Rate</span>
+                <div class="score-body">
+                  <div class="score-metric">
+                    <strong class="score-value" id="cmpGrowth">—</strong>
+                    <span class="score-unit">%</span>
+                  </div>
+                  <span class="score-meta">Year-over-Year (YoY)</span>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="score-group score-group-priority" id="priorityCrops">
+            <p class="score-group-label">Top Fruit Commodities</p>
+            <div class="score-track" id="priorityCropsTrack"></div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="content-stack">
+            <article class="panel">
+              <div class="panel-header panel-header-trend">
+                <h2 class="trend-panel-title" id="volumeTrendTitle">
+                  Annual Production Volume
+                  <span class="trend-panel-title-rest">Trend</span>
+                </h2>
+              </div>
+              <div class="chart-box chart-box-trend">
+                <canvas id="trendChart"></canvas>
+              </div>
+              <aside class="trend-insight" aria-live="polite">
+                <span class="trend-insight-label">Analysis</span>
+                <p id="trendChartSub" class="trend-insight-text">Analyzing selected years…</p>
+              </aside>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header panel-header-trend">
+                <h2 class="trend-panel-title" id="volumeGrowthTitle">
+                  Year-on-Year Production Volume
+                  <span class="trend-panel-title-rest">Growth Rate</span>
+                </h2>
+              </div>
+              <div class="chart-box chart-box-trend chart-box-growth">
+                <canvas id="volumeGrowthChart"></canvas>
+              </div>
+              <aside class="trend-insight" aria-live="polite">
+                <span class="trend-insight-label">Analysis</span>
+                <p id="volumeGrowthChartSub" class="trend-insight-text">Analyzing selected years…</p>
+              </aside>
+            </article>
+
+            <article class="panel panel-volume-compare">
+              <div class="panel-header panel-header-trend panel-header-with-control">
+                <h2 class="trend-panel-title" id="ecosystemVolumeTitle">Production Volume Comparison by Fruits</h2>
+                <label class="metric-select">
+                  <span class="metric-select-label">Show top</span>
+                  <select id="ecosystemVolumeTopN" aria-label="Number of top fruits to show">
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+              </div>
+              <p id="ecosystemVolumeTableSub" class="eco-table-sub">Compared to previous year</p>
+              <div class="table-wrap volume-compare-table-wrap ecosystem-volume-table-wrap">
+                <table id="ecosystemVolumeTable" class="eco-volume-table" data-sort-table="ecosystemVolume">
+                  <thead>
+                    <tr>
+                      <th scope="col" data-sort-key="name" class="is-sortable" title="Sort by Fruit" id="ecosystemVolumeNameTh">Fruit</th>
+                      <th scope="col" data-sort-key="latest" class="is-sortable is-sorted is-desc" title="Sort by Latest">
+                        <span class="th-label">Latest</span>
+                      </th>
+                      <th scope="col" data-sort-key="previous" class="is-sortable" title="Sort by Previous">
+                        <span class="th-label">Previous</span>
+                      </th>
+                      <th scope="col" data-sort-key="variance" class="is-sortable" title="Sort by Variance">Variance</th>
+                      <th scope="col" data-sort-key="growth" class="is-sortable" title="Sort by Growth">Growth</th>
+                      <th scope="col" data-sort-key="share" class="is-sortable" title="Sort by Share">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ecosystemVolumeTableBody"></tbody>
+                </table>
+              </div>
+            </article>
+
+          </div>
+
+          <div class="content-stack content-stack-side">
+            <article class="panel panel-volume-compare">
+              <div class="panel-header panel-header-trend">
+                <h2 class="trend-panel-title">Production Volume Comparison by Region</h2>
+                <p id="regionVolumeTableSub" class="eco-table-sub">Compared to previous year</p>
+              </div>
+              <div class="table-wrap volume-compare-table-wrap region-volume-table-wrap">
+                <table id="regionVolumeTable" class="eco-volume-table" data-sort-table="regionVolume">
+                  <thead>
+                    <tr>
+                      <th scope="col" data-sort-key="name" class="is-sortable" title="Sort by Region">Region</th>
+                      <th scope="col" data-sort-key="latest" class="is-sortable" title="Sort by Latest">
+                        <span class="th-label">Latest</span>
+                      </th>
+                      <th scope="col" data-sort-key="previous" class="is-sortable" title="Sort by Previous">
+                        <span class="th-label">Previous</span>
+                      </th>
+                      <th scope="col" data-sort-key="variance" class="is-sortable" title="Sort by Variance">Variance</th>
+                      <th scope="col" data-sort-key="growth" class="is-sortable" title="Sort by Growth">Growth</th>
+                      <th scope="col" data-sort-key="share" class="is-sortable" title="Sort by Share">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="regionVolumeTableBody"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="panel panel-volume-compare">
+              <div class="panel-header panel-header-trend panel-header-with-control">
+                <h2 class="trend-panel-title">Production Volume Comparison by Province</h2>
+                <label class="metric-select">
+                  <span class="metric-select-label">Show top</span>
+                  <select id="provinceVolumeTopN" aria-label="Number of top provinces to show">
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+              </div>
+              <p id="provinceVolumeTableSub" class="eco-table-sub">Compared to previous year</p>
+              <div class="table-wrap volume-compare-table-wrap province-volume-table-wrap">
+                <table id="provinceVolumeTable" class="eco-volume-table province-volume-table" data-sort-table="provinceVolume">
+                  <thead>
+                    <tr>
+                      <th scope="col" data-sort-key="name" class="is-sortable" title="Sort by Province">Province</th>
+                      <th scope="col" data-sort-key="latest" class="is-sortable is-sorted is-desc" title="Sort by Latest">
+                        <span class="th-label">Latest</span>
+                      </th>
+                      <th scope="col" data-sort-key="previous" class="is-sortable" title="Sort by Previous">
+                        <span class="th-label">Previous</span>
+                      </th>
+                      <th scope="col" data-sort-key="variance" class="is-sortable" title="Sort by Variance">Variance</th>
+                      <th scope="col" data-sort-key="growth" class="is-sortable" title="Sort by Growth">Growth</th>
+                      <th scope="col" data-sort-key="share" class="is-sortable" title="Sort by Share">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody id="provinceVolumeTableBody"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="app-footer">
+      <div class="app-footer-inner">
+        <span class="app-footer-product" id="footerProductName">Fruit Crops Production Dashboard</span>
+        <span class="app-footer-org">Department of Agriculture · Agricultural Statistics</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    window.DASHBOARD_CONFIG = {
+      dataset: "fruits",
+      mode: "multiCrop",
+      cropGroup: null,
+      slug: "fruits",
+      title: "Fruit Crops Production Dashboard",
+      groupLabel: "Fruit",
+      groupNoun: "fruit",
+      groupPlural: "fruits",
+      groupAllLabel: "All fruits",
+      subtypeLabel: "Variety",
+      subtypeNoun: "variety",
+      subtypePlural: "varieties",
+      subtypeAllLabel: "All varieties",
+      seriesSplit: "crop_group",
+      showAreaYield: false,
+      showSubtypeAverages: false,
+      priorityCropTopN: 3,
+      defaultCrops: "all",
+      chartSeriesLimit: 12,
+      enableSmartAnalysis: true,
+      subtypes: [],
+    };
+  </script>
+  <script src="/assets/dashboard.js?v=126"></script>
+</body>
+</html>

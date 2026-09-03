@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AgriStat Data Analytics Platform</title>
+  <link rel="icon" type="image/png" href="/assets/images/dap-logo.png" />
+  <link rel="apple-touch-icon" href="/assets/images/dap-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css?v=92" />
+  <link rel="stylesheet" href="/assets/landing.css?v=42" />
+</head>
+<body class="landing-body">
+  <a class="landing-skip-link" href="#main-content">Skip to main content</a>
+  <div class="landing-shell">
+    <header class="app-header landing-header" aria-labelledby="landing-title">
+      <div class="header-start">
+        <div class="header-brand">
+          <div class="brand-mark" aria-hidden="true">
+            <img
+              src="/assets/images/dap-logo.png"
+              alt=""
+              class="brand-logo"
+              width="40"
+              height="40"
+            />
+          </div>
+          <div class="brand-text">
+            <strong id="landing-title">AgriStat Data Analytics Platform</strong>
+            <span>Department of Agriculture · Agricultural Statistics NCMO</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="landing-header-clock" id="landingClock" aria-label="Current date and time">
+          <time class="landing-header-clock-line" id="landingClockTime" datetime="">
+            <span class="landing-clock-live" aria-hidden="true">
+              <span class="landing-clock-dot"></span>
+            </span>
+            <span class="landing-clock-hm" id="landingClockHm">--:--</span>
+            <span class="landing-clock-sec" id="landingClockSec">--</span>
+            <span class="landing-clock-ampm" id="landingClockAmpm">--</span>
+            <span class="landing-clock-date-wrap">
+              <span class="landing-clock-sep" aria-hidden="true">·</span>
+              <time class="landing-clock-date" id="landingClockDate" datetime="">Loading…</time>
+              <span class="landing-clock-sep" aria-hidden="true">·</span>
+              <span class="landing-clock-tz">PHT</span>
+            </span>
+          </time>
+        </div>
+      </div>
+    </header>
+
+    <main class="landing-main" id="main-content">
+      <section class="landing-snapshots-section" aria-labelledby="snapshots-title">
+        <header class="landing-section-head landing-section-head-row">
+          <div class="landing-section-head-copy">
+            <h2 class="landing-section-title" id="snapshots-title">Production snapshot</h2>
+            <p class="landing-section-sub" id="snapshotsSub">Loading production averages…</p>
+          </div>
+          <button type="button" class="landing-refresh-btn" id="snapshotRefreshBtn" title="Refresh snapshot data" aria-label="Refresh snapshot data">
+            <svg class="landing-refresh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08a5.99 5.99 0 0 1-5.65 4c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              />
+            </svg>
+          </button>
+        </header>
+        <div class="landing-snapshot-grid" id="snapshotGrid" aria-busy="true"></div>
+      </section>
+
+      <section class="landing-catalog-section" aria-labelledby="catalog-title">
+        <header class="landing-section-head landing-catalog-head">
+          <div class="landing-section-head-copy">
+            <h2 class="landing-section-title" id="catalog-title">All dashboards</h2>
+            <p class="landing-section-sub">Star your favorites to keep them at the top.</p>
+          </div>
+        </header>
+
+        <div class="landing-catalog">
+          <section class="landing-category" aria-labelledby="category-commodity-production">
+          <h3 class="landing-category-title" id="category-commodity-production">Commodity Production</h3>
+          <div class="landing-card-grid">
+            <div class="landing-card-wrap" data-dashboard-id="palay" data-order="1">
+              <button type="button" class="landing-pin-btn" data-pin-id="palay" aria-label="Add to favorites" aria-pressed="false" title="Add to favorites">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
+              <a class="landing-card" href="/dashboards/palay">
+                <span class="landing-card-crop">Palay</span>
+                <h3 class="landing-card-title">Palay Production</h3>
+                <p class="landing-card-desc">Volume, area harvested, and yield for irrigated and rainfed palay.</p>
+                <div class="landing-card-footer">
+                  <div class="landing-card-tags">
+                    <span class="landing-tag">PSA OpenSTAT</span>
+                    <span class="landing-tag">Province-level</span>
+                  </div>
+                  <span class="landing-card-cta">Open <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            </div>
+
+            <div class="landing-card-wrap" data-dashboard-id="corn" data-order="2">
+              <button type="button" class="landing-pin-btn" data-pin-id="corn" aria-label="Add to favorites" aria-pressed="false" title="Add to favorites">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
+              <a class="landing-card" href="/dashboards/corn">
+                <span class="landing-card-crop">Corn</span>
+                <h3 class="landing-card-title">Corn Production</h3>
+                <p class="landing-card-desc">Volume, area, and yield for white and yellow corn nationwide.</p>
+                <div class="landing-card-footer">
+                  <div class="landing-card-tags">
+                    <span class="landing-tag">PSA OpenSTAT</span>
+                    <span class="landing-tag">Province-level</span>
+                  </div>
+                  <span class="landing-card-cta">Open <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            </div>
+
+            <div class="landing-card-wrap" data-dashboard-id="fruits" data-order="3">
+              <button type="button" class="landing-pin-btn" data-pin-id="fruits" aria-label="Add to favorites" aria-pressed="false" title="Add to favorites">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
+              <a class="landing-card" href="/dashboards/fruits">
+                <span class="landing-card-crop">Fruits</span>
+                <h3 class="landing-card-title">Fruit Crops Production</h3>
+                <p class="landing-card-desc">Production volume and YoY growth across fruit commodities.</p>
+                <div class="landing-card-footer">
+                  <div class="landing-card-tags">
+                    <span class="landing-tag">PSA OpenSTAT</span>
+                    <span class="landing-tag">Province-level</span>
+                  </div>
+                  <span class="landing-card-cta">Open <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            </div>
+
+            <div class="landing-card-wrap" data-dashboard-id="vegetables" data-order="4">
+              <button type="button" class="landing-pin-btn" data-pin-id="vegetables" aria-label="Add to favorites" aria-pressed="false" title="Add to favorites">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
+              <a class="landing-card" href="/dashboards/vegetables">
+                <span class="landing-card-crop">Vegetables</span>
+                <h3 class="landing-card-title">Vegetables &amp; Root Crops</h3>
+                <p class="landing-card-desc">Volume trends for vegetables and root crops by region and province.</p>
+                <div class="landing-card-footer">
+                  <div class="landing-card-tags">
+                    <span class="landing-tag">PSA OpenSTAT</span>
+                    <span class="landing-tag">Province-level</span>
+                  </div>
+                  <span class="landing-card-cta">Open <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="landing-category" aria-labelledby="category-market-and-trade">
+          <h3 class="landing-category-title" id="category-market-and-trade">Market and Trade</h3>
+          <div class="landing-card-grid landing-card-grid-market">
+            <div class="landing-card-wrap" data-dashboard-id="market-prices" data-order="1">
+              <button type="button" class="landing-pin-btn" data-pin-id="market-prices" aria-label="Add to favorites" aria-pressed="false" title="Add to favorites">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </button>
+              <a
+                class="landing-card landing-card-external"
+                href="https://presyong-palengke.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open Market Price Monitoring in a new tab"
+              >
+                <div class="landing-card-topline">
+                  <span class="landing-card-crop">Markets</span>
+                  <span class="landing-card-external-badge">External</span>
+                </div>
+                <h3 class="landing-card-title">Market Price Monitoring</h3>
+                <p class="landing-card-desc">Retail prices for key commodities across regions and markets.</p>
+                <div class="landing-card-footer">
+                  <div class="landing-card-tags">
+                    <span class="landing-tag">DA Bantay Presyo</span>
+                  </div>
+                  <span class="landing-card-cta">Open in new tab <span aria-hidden="true">↗</span></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+      </section>
+    </main>
+
+    <footer class="app-footer landing-footer">
+      <div class="app-footer-inner">
+        <span class="app-footer-product">AgriStat Data Analytics Platform</span>
+        <span class="app-footer-org">Department of Agriculture · Agricultural Statistics</span>
+      </div>
+    </footer>
+  </div>
+  <script src="/assets/landing.js?v=20"></script>
+</body>
+</html>

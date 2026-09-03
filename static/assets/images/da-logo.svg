@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Department of Agriculture">
+  <circle cx="60" cy="60" r="58" fill="#fff" stroke="#056634" stroke-width="4"/>
+  <circle cx="60" cy="60" r="46" fill="#056634"/>
+  <path d="M60 28 C48 42 42 52 42 62 C42 74 50 82 60 82 C70 82 78 74 78 62 C78 52 72 42 60 28Z" fill="#fcd116"/>
+  <path d="M60 36 L62 54 L80 54 L66 64 L71 82 L60 72 L49 82 L54 64 L40 54 L58 54 Z" fill="#fff" opacity="0.9"/>
+  <text x="60" y="98" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" fill="#056634">DEPARTMENT OF AGRICULTURE</text>
+</svg>
