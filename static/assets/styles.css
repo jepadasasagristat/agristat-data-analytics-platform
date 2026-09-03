@@ -2763,10 +2763,34 @@ th:nth-child(n + 4) {
   padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
 }
 
+.app-footer-left {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
 .app-footer-product {
   font-weight: 600;
   color: var(--color-text);
   min-width: 0;
+}
+
+.app-footer-demo {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1px solid #c5d9c8;
+  border-radius: 999px;
+  background: #eef6f0;
+  color: var(--color-primary);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
 .app-footer-org {

@@ -7,5 +7,4 @@ data/**
 scraping/**
 app.py
 requirements.txt
-render.yaml
 scripts/vercel_build.py

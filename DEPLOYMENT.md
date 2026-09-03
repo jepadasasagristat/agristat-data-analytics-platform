@@ -16,28 +16,58 @@ python -m uvicorn app:app --host 127.0.0.1 --port 8765
 
 ---
 
-## 1. Deploy the API on Render
+## 1. Deploy the API on Render (Web Service, Free)
+
+Do **not** use Blueprint. Create a Web Service so you can pick the **Free** instance (no payment method).
 
 1. Open [dashboard.render.com](https://dashboard.render.com) and sign in with GitHub.
-2. **New → Blueprint** (or **New → Web Service**) and select this repository.
-3. If using the included `render.yaml`, Render will create `agristat-api`.
-4. Manual settings if you skip the blueprint:
-   - **Runtime:** Python 3
-   - **Build command:** `pip install -r requirements.txt`
-   - **Start command:** `python -m uvicorn app:app --host 0.0.0.0 --port $PORT`
-   - **Health check:** `/api/health`
-5. Enable **Git LFS** for the repo (Render must download `data/*.db`).
-6. Deploy. Copy the service URL, for example:
+2. **New + → Web Service** (not Blueprint).
+3. Connect **agristat-data-analytics-platform**. If it is missing from the list, grant Render access (see below), then refresh.
+4. Fill in:
 
-   `https://agristat-api.onrender.com`
+   | Setting | Value |
+   | --- | --- |
+   | Name | `agristat-api` (or any name) |
+   | Language | Python 3 |
+   | Branch | `main` |
+   | Region | closest to you |
+   | Build command | `pip install -r requirements.txt` |
+   | Start command | `python -m uvicorn app:app --host 0.0.0.0 --port $PORT` |
+   | Instance type | **Free** |
 
-7. Confirm:
+5. Under Advanced (if shown):
+   - Health check path: `/api/health`
+   - Leave auto-deploy on
+6. Create Web Service and wait for the first deploy.
+7. Enable **Git LFS** on the service if Render shows a Git setting for it (the `.db` files must download).
+8. Copy the service URL. This project uses:
 
-   `https://YOUR-API.onrender.com/api/health`
+   `https://agristat-data-analytics-platform.onrender.com`
 
-   All datasets should show `"ready": true`.
+9. Open `https://agristat-data-analytics-platform.onrender.com/api/health`. All datasets should show `"ready": true`.
 
-Render’s free web service **sleeps after idle**. The first request after sleep can take 30–60 seconds. A paid instance stays awake.
+The Free instance **sleeps after idle**. The first request after sleep can take 30–60 seconds.
+
+### Repo not in the Render list
+
+Render only shows GitHub repos the **Render GitHub App** is allowed to access.
+
+1. In the Web Service “Connect a repository” screen, click **Configure account** / **GitHub** / **Adjust GitHub App Permissions**.
+2. GitHub opens **GitHub Apps → Render** (or [github.com/settings/installations](https://github.com/settings/installations)).
+3. Next to **Render**, click **Configure**.
+4. Under **Repository access**, either:
+   - **All repositories**, or
+   - **Only select repositories** → add `agristat-data-analytics-platform`
+5. Save, go back to Render, and click the refresh icon next to the repo list.
+
+Also check:
+
+- You are signed into Render with the **jepadasasagristat** GitHub user (the repo owner).
+- The repo URL is [github.com/jepadasasagristat/agristat-data-analytics-platform](https://github.com/jepadasasagristat/agristat-data-analytics-platform).
+
+If Render lets you paste a public Git URL instead of picking from the list, use:
+
+`https://github.com/jepadasasagristat/agristat-data-analytics-platform`
 
 ---
 
@@ -50,10 +80,9 @@ The existing Vercel project was treating this repo as a Python app. Change it:
    - **Build Command:** `node scripts/write_api_config.js` (from `vercel.json`)
    - **Output Directory:** `static`
    - **Install Command:** leave empty
-2. **Settings → Environment Variables**
+2. **Settings → Environment Variables** (optional if using the default in `config.js`)
    - Name: `API_ORIGIN`
-   - Value: your Render URL with **no trailing slash**  
-     Example: `https://agristat-api.onrender.com`
+   - Value: `https://agristat-data-analytics-platform.onrender.com`
    - Apply to Production and Preview
 3. Redeploy (Deployments → latest → Redeploy, or push to `main`).
 
@@ -67,7 +96,7 @@ The existing Vercel project was treating this repo as a Python app. Change it:
 | --- | --- |
 | `https://adap-demo.vercel.app/` | Landing page |
 | `https://adap-demo.vercel.app/dashboards/palay` | Palay dashboard |
-| `https://YOUR-API.onrender.com/api/health` | JSON, datasets ready |
+| `https://agristat-data-analytics-platform.onrender.com/api/health` | JSON, datasets ready |
 | Landing snapshots | Charts load from Render |
 
 If the UI loads but snapshots say the API is required, `API_ORIGIN` is missing or wrong. Check `https://adap-demo.vercel.app/assets/config.js` — `AGRI_API_BASE` should be the Render URL.
