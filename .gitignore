@@ -15,9 +15,8 @@ Thumbs.db
 .vscode/
 *.log
 
-# SQLite sidecars and oversized local DBs (GitHub 100MB limit)
-# Rebuild on deploy via: python scripts/vercel_build.py
-data/*.db
+# SQLite sidecars / local scrape dumps
+# data/*.db is tracked via Git LFS (.gitattributes)
 data/*.db-shm
 data/*.db-wal
 data/raw/
