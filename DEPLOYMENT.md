@@ -56,7 +56,7 @@ To update data: refresh locally, rebuild databases, commit, and redeploy.
 
 ### 3. Cold starts
 
-Large SQLite files increase cold-start time and memory use. `vercel.json` requests **3008 MB** memory and **300s** max duration for the API function.
+Large SQLite files increase cold-start time and memory use. `vercel.json` requests **2048 MB** memory (Hobby plan maximum) and **300s** max duration for the API function.
 
 ### 4. Alternative platforms
 
