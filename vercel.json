@@ -1,11 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "python scripts/vercel_build.py",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index" }
-  ],
   "functions": {
-    "api/index.py": {
+    "app.py": {
       "maxDuration": 300,
       "memory": 2048,
       "excludeFiles": "{data/raw/**,data/*_long.csv}"
